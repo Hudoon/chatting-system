@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat Group page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<div>
+    <label>Select Room</label>
+    <select id="roomsSelection"></select>
+
+</div>
+<div>
+    <P>Or Creat new room</P>
+    <div class="form-group">
+        <label for="newRoom">Enter New Room:</label>
+        <input type="text" class="form-control" id="newRoom" aria-describedby="exampleInputRoom" placeholder="Enter room">
+        <button  class="btn btn-primary" onclick="addNewRoom()">Submit</button>
+    </div>
+</div>
+
+<script src="/js/data.js"></script>
+</body>
+</html>
