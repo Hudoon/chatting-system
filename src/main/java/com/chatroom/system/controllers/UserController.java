@@ -1,10 +1,12 @@
-package com.chatroom.system;
+package com.chatroom.system.controllers;
 
+import com.chatroom.system.Excepetions.ResourceNotFoundException;
+import com.chatroom.system.entities.User;
+import com.chatroom.system.Repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

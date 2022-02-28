@@ -1,4 +1,4 @@
-package com.chatroom.system;
+package com.chatroom.system.Excepetions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

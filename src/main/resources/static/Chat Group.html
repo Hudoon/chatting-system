@@ -1,26 +1,42 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 <head>
     <title>Chat Group page</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
 </head>
-<body>
+<body onload="selectRom()">
+
+<div class="form-group" class="container" >
+    <br>
+    <br>
 
 <div>
     <label>Select Room</label>
     <select id="roomsSelection"></select>
-
+    <button  class="btn btn-primary" onclick="joinToRoom()">Join To Group</button>
 </div>
 <div>
     <P>Or Creat new room</P>
-    <div class="form-group">
+
         <label for="newRoom">Enter New Room:</label>
         <input type="text" class="form-control" id="newRoom" aria-describedby="exampleInputRoom" placeholder="Enter room">
-        <button  class="btn btn-primary" onclick="addNewRoom()">Submit</button>
+        <button  class="btn btn-primary" onclick="addNewRoom()">Creat New Group</button>
     </div>
+
 </div>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.3.0/sockjs.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+<!--<script src="/js/mychat.js"></script>-->
 <script src="/js/data.js"></script>
 </body>
 </html>

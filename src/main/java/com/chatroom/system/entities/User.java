@@ -1,4 +1,4 @@
-package com.chatroom.system;
+package com.chatroom.system.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
