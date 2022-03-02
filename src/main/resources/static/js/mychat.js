@@ -18,10 +18,10 @@ var chatUsersCount = document.querySelector("#chatUsersCount");
 let chatUsersCtr = document.querySelector("#users");
 let userInRoomId;
 let users = [];
-
+document.cookie =name , room;
 window.onload= function connect(event) {
-    var name1 = name;
-    Cookies.set('name', name1);
+    //var name1 = name;
+  //  Cookies.set('name', name1);
    // usernamePage.classList.add('d-none');
     chatPage.classList.remove('d-none');
     console.log("on connect function");
@@ -57,7 +57,7 @@ function exitRoom(newRoomId)
 {
     var roomId = newRoomId;
 
-    Cookies.set('roomId', room);
+    //Cookies.set('roomId', room);
 
     roomIdDisplay.textContent = roomId;
     topic = `/chat-app/chat/${newRoomId}`;
@@ -92,49 +92,62 @@ function enterRoom(newRoomId) {
         JSON.stringify({sender: username, type: 'JOIN'})
     );
     console.log('adduser');
-
+    // addUserToRoom();
 
 
 }
-
-function addUserToRoom(username, roomname ){
-    console.log(username +" "+roomname);
-    // Creating a XHR object
-    let xhr = new XMLHttpRequest();
-
-    // open a connection
-    xhr.open("POST", apiUrl+"/groups/addNewUserToRoom", true);
-
-    // Set the request header i.e. which type of content you are sending
-    xhr.setRequestHeader("Content-Type", "application/json");
-
-    // Create a state change callback
-    xhr.onreadystatechange = function () {
-        console.log(xhr.readyState +""+ xhr.status );
-        if (!(xhr.status === 200)) {
-
-            alert(" There is an error, please try again");
-        }
-    };
-
-    // Converting JSON data to string
-    var data = JSON.stringify({ "username": username ,"roomName": roomname});
-
-    // Sending data with the request
-    xhr.send(data);
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            var response = xhr.response;
-
-            var parsed = JSON.parse(response);
-            userInRoomId=parsed.id;
-            console.log(userInRoomId);
-        }
-    }
-
-   // console.log("response"+xhr.response.json());
-
-}
+//
+// function addUserToRoom( ){
+//   let x =document.cookie ;
+//   console.log("document.cookie ="+x);
+//     console.log(name +" "+room);
+//     // const value = `; ${document.cookie}`;
+//     // const parts = value.split(`; ${name}=`);
+//    // console.log(parts.pop().split(';'));  for(var i = 0; i <parts.length; i++) {
+//    //      var c = parts[i];
+//    //      while (c.charAt(0) == ' ') {
+//    //          c = c.substring(1);
+//    //      }
+//    //      if (c.indexOf(name) == 0) {
+//    //          console.log(c.substring(name.length, c.length));
+//    //      }
+//    //  }
+//     // Creating a XHR object
+//     let xhr = new XMLHttpRequest();
+//
+//     // open a connection
+//     xhr.open("POST", apiUrl+"/groups/addNewUserToRoom", true);
+//
+//     // Set the request header i.e. which type of content you are sending
+//     xhr.setRequestHeader("Content-Type", "application/json");
+//
+//     // Create a state change callback
+//     xhr.onreadystatechange = function () {
+//         console.log(xhr.readyState +""+ xhr.status );
+//         if (!(xhr.status === 200)) {
+//
+//             alert(" There is an error, please try again");
+//         }
+//     };
+//
+//     // Converting JSON data to string
+//     var data = JSON.stringify({ "username": name ,"roomName": room});
+//
+//     // Sending data with the request
+//     xhr.send(data);
+//     xhr.onreadystatechange = function() {
+//         if (xhr.readyState === 4 && xhr.status === 200) {
+//             var response = xhr.response;
+//
+//             var parsed = JSON.parse(response);
+//             userInRoomId=parsed.id;
+//             console.log(userInRoomId);
+//         }
+//     }
+//     showOnlineUsers();
+//    // console.log("response"+xhr.response.json());
+//
+// }
 
 function deleteUserFromRoom( ){
 
@@ -180,25 +193,25 @@ function sendMessage(event) {
 
 // Join user to chat
 function userJoin( username) {
-    addUserToRoom(name,room)
+   // addUserToRoom(name,room)
 
-    const user ={ username};
-    chatUsersCount= chatUsersCount+1;
-    users.push(user);
-    chatUsersCtr.innerHTML = '';
-    console.log("all users"+users.length);
-    users.forEach((u) => {
-        console.log("all users"+u.username);
-
-        const userEl = document.createElement("div");
-        userEl.className = "chat-user";
-        userEl.innerHTML = u.username;
-        chatUsersCtr.appendChild(userEl);
-    });
-
+    // const user ={ username};
+    // chatUsersCount= chatUsersCount+1;
+    // users.push(user);
+    // chatUsersCtr.innerHTML = '';
+    // console.log("all users"+users.length);
+    // users.forEach((u) => {
+    //     console.log("all users"+u.username);
+    //
+    //     const userEl = document.createElement("div");
+    //     userEl.className = "chat-user";
+    //     userEl.innerHTML = u.username;
+    //     chatUsersCtr.appendChild(userEl);
+    // });
+showOnlineUsers();
 }
 
-function showOnlinUsers(){
+function showOnlineUsers(){
     let xhr = new XMLHttpRequest();
 
     // open a connection
@@ -217,13 +230,28 @@ function showOnlinUsers(){
 
     };
     xhr.send(null);
-    xhr.onreadystatechange = function() {
+    xhr.onload = function() {
         if (xhr.readyState === 4 && xhr.status === 200) {
             var response = xhr.response;
 
-            var parsed = JSON.parse(response);
+            // var parsed = JSON.parse(response.te);
+            // users.push(response);
+            console.log("list of current user in room "+response);
+                let currentUserInGroup =[];
+            currentUserInGroup.push(response);
+            console.log("list of current user in room "+currentUserInGroup.toString());
+            chatUsersCtr.innerHTML = '';
+            console.log("all users count"+currentUserInGroup.length);
+            var jsonData = JSON.parse(currentUserInGroup);
+            for (var i=0 ; i < jsonData.length;i++){
+            console.log(jsonData[i].username);
+            //
+                const userEl = document.createElement("div");
+                userEl.className = "chat-user";
+                userEl.innerHTML = jsonData[i].username;
+                chatUsersCtr.appendChild(userEl);
+            }
 
-            console.log(parsed);
         }
     }
 }
@@ -276,9 +304,11 @@ function onMessageReceived(payload) {
 
 
 }
-//
-// $(document).ready(function() {
-//    // userJoinForm.addEventListener('submit', connect, true);
-//     messagebox.addEventListener('submit', sendMessage, true);
-//     userLeaveForm.addEventListener('submit', disconnect, true);
-// });
+
+$(document).ready(function() {
+    console.log("document loaded");
+    // document.addEventListener('DOMContentLoaded', addUserToRoom, true);
+   // userJoinForm.addEventListener('submit', connect, true);
+   //  messagebox.addEventListener('submit', sendMessage, true);
+   //  userLeaveForm.addEventListener('submit', disconnect, true);
+});
