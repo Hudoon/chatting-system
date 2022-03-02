@@ -17,7 +17,7 @@ var username;
 var chatUsersCount = document.querySelector("#chatUsersCount");
 let chatUsersCtr = document.querySelector("#users");
 let userInRoomId;
-let users = [];
+let currentUserInGroup =[];
 document.cookie =name , room;
 window.onload= function connect(event) {
     //var name1 = name;
@@ -34,7 +34,7 @@ window.onload= function connect(event) {
 function disconnect(event) {
     //stompClient.disconnect({}, onDisconnect,onError())
     onDisconnect();
-    deleteUserFromRoom();
+    //deleteUserFromRoom();
     console.log("Disconnected");
 
 }
@@ -69,6 +69,8 @@ function exitRoom(newRoomId)
         JSON.stringify({sender: username, type: 'LEAVE'})
     );
     console.log('leave user');
+    deleteUserFromRoom(username);
+    showOnlineUsers();
     stompClient.disconnect();
 
 
@@ -96,60 +98,16 @@ function enterRoom(newRoomId) {
 
 
 }
-//
-// function addUserToRoom( ){
-//   let x =document.cookie ;
-//   console.log("document.cookie ="+x);
-//     console.log(name +" "+room);
-//     // const value = `; ${document.cookie}`;
-//     // const parts = value.split(`; ${name}=`);
-//    // console.log(parts.pop().split(';'));  for(var i = 0; i <parts.length; i++) {
-//    //      var c = parts[i];
-//    //      while (c.charAt(0) == ' ') {
-//    //          c = c.substring(1);
-//    //      }
-//    //      if (c.indexOf(name) == 0) {
-//    //          console.log(c.substring(name.length, c.length));
-//    //      }
-//    //  }
-//     // Creating a XHR object
-//     let xhr = new XMLHttpRequest();
-//
-//     // open a connection
-//     xhr.open("POST", apiUrl+"/groups/addNewUserToRoom", true);
-//
-//     // Set the request header i.e. which type of content you are sending
-//     xhr.setRequestHeader("Content-Type", "application/json");
-//
-//     // Create a state change callback
-//     xhr.onreadystatechange = function () {
-//         console.log(xhr.readyState +""+ xhr.status );
-//         if (!(xhr.status === 200)) {
-//
-//             alert(" There is an error, please try again");
-//         }
-//     };
-//
-//     // Converting JSON data to string
-//     var data = JSON.stringify({ "username": name ,"roomName": room});
-//
-//     // Sending data with the request
-//     xhr.send(data);
-//     xhr.onreadystatechange = function() {
-//         if (xhr.readyState === 4 && xhr.status === 200) {
-//             var response = xhr.response;
-//
-//             var parsed = JSON.parse(response);
-//             userInRoomId=parsed.id;
-//             console.log(userInRoomId);
-//         }
-//     }
-//     showOnlineUsers();
-//    // console.log("response"+xhr.response.json());
-//
-// }
 
-function deleteUserFromRoom( ){
+function deleteUserFromRoom(userLeft){
+    var jsonData = JSON.parse(currentUserInGroup);
+    // console.log("on delete "+jsonData.textContent);
+    console.log(userLeft);
+    let result = jsonData.find(obj => {
+        return obj.username === userLeft;
+    })
+console.log(result.id);
+    userInRoomId=result.id;
 
     // Creating a XHR object
     let xhr = new XMLHttpRequest();
@@ -170,6 +128,7 @@ function deleteUserFromRoom( ){
 
     };
     xhr.send(null);
+
 }
 
 function sendMessage(event) {
@@ -190,26 +149,6 @@ function sendMessage(event) {
     event.preventDefault();
 }
 
-
-// Join user to chat
-function userJoin( username) {
-   // addUserToRoom(name,room)
-
-    // const user ={ username};
-    // chatUsersCount= chatUsersCount+1;
-    // users.push(user);
-    // chatUsersCtr.innerHTML = '';
-    // console.log("all users"+users.length);
-    // users.forEach((u) => {
-    //     console.log("all users"+u.username);
-    //
-    //     const userEl = document.createElement("div");
-    //     userEl.className = "chat-user";
-    //     userEl.innerHTML = u.username;
-    //     chatUsersCtr.appendChild(userEl);
-    // });
-showOnlineUsers();
-}
 
 function showOnlineUsers(){
     let xhr = new XMLHttpRequest();
@@ -237,10 +176,11 @@ function showOnlineUsers(){
             // var parsed = JSON.parse(response.te);
             // users.push(response);
             console.log("list of current user in room "+response);
-                let currentUserInGroup =[];
+            currentUserInGroup=[];
             currentUserInGroup.push(response);
             console.log("list of current user in room "+currentUserInGroup.toString());
             chatUsersCtr.innerHTML = '';
+
             console.log("all users count"+currentUserInGroup.length);
             var jsonData = JSON.parse(currentUserInGroup);
             for (var i=0 ; i < jsonData.length;i++){
@@ -270,16 +210,17 @@ function onMessageReceived(payload) {
         messageElement.classList.add('event-message');
         message.content = message.sender + ' joined!';
         console.log("/////////////////////type join "+message.content);
-        userJoin(message.sender);
+        showOnlineUsers();
 
 
     } else if (message.type === 'LEAVE') {
         messageElement.classList.add('event-message');
         message.content = message.sender + ' left!';
         console.log(message.sender + ' left!');
-        console.log("/////////////////////type leave"+message.content);
+        console.log("/////////////////////type leave "+message.content);
         // disconnect();
-        deleteUserFromRoom();
+       // showOnlineUsers();
+       // deleteUserFromRoom(message.sender);
     }
     else {
         messageElement.classList.add('chat-message');
